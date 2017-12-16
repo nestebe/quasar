@@ -8,7 +8,7 @@
     <template v-if="before">
       <q-icon
         v-for="item in before"
-        :key="item.icon"
+        :key="`b${item.icon}`"
         class="q-if-control q-if-control-before"
         :class="{hidden: __additionalHidden(item, hasError, hasWarning, length)}"
         :name="item.icon"
@@ -20,7 +20,7 @@
 
     <div class="q-if-inner col row no-wrap items-center relative-position">
       <div
-        v-if="label"
+        v-if="hasLabel"
         class="q-if-label ellipsis full-width absolute self-start"
         :class="{'q-if-label-above': labelIsAbove}"
         v-html="label"
@@ -47,7 +47,7 @@
     <template v-if="after">
       <q-icon
         v-for="item in after"
-        :key="item.icon"
+        :key="`a${item.icon}`"
         class="q-if-control"
         :class="{hidden: __additionalHidden(item, hasError, hasWarning, length)}"
         :name="item.icon"
@@ -81,12 +81,18 @@ export default {
     __field: { default: null }
   },
   computed: {
+    hasStackLabel () {
+      return typeof this.stackLabel === 'string' && this.stackLabel.length > 0
+    },
+    hasLabel () {
+      return this.hasStackLabel || (typeof this.floatLabel === 'string' && this.floatLabel.length > 0)
+    },
     label () {
-      return this.stackLabel || this.floatLabel
+      return this.hasStackLabel ? this.stackLabel : this.floatLabel
     },
     addonClass () {
       return {
-        'q-if-addon-visible': this.labelIsAbove,
+        'q-if-addon-visible': !this.hasLabel || this.labelIsAbove,
         'self-start': this.topAddons
       }
     },
@@ -99,7 +105,8 @@ export default {
         'q-if-disabled': this.disable,
         'q-if-focusable': this.focusable && !this.disable,
         'q-if-inverted': this.inverted,
-        'q-if-dark': this.dark || this.inverted
+        'q-if-dark': this.dark || this.inverted,
+        'q-if-hide-underline': this.hideUnderline
       }]
 
       const color = this.hasError ? 'negative' : this.hasWarning ? 'warning' : this.color

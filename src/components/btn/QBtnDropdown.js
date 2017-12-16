@@ -40,7 +40,7 @@ export default {
         'q-icon',
         {
           props: {
-            name: 'arrow_drop_down'
+            name: this.$q.icon.input.dropdown
           },
           staticClass: 'transition-generic',
           'class': {
@@ -68,8 +68,7 @@ export default {
             flat: this.flat,
             rounded: this.rounded,
             push: this.push,
-            small: this.small,
-            big: this.big,
+            size: this.size,
             color: this.color,
             glossy: this.glossy,
             compact: this.compact,
@@ -79,6 +78,7 @@ export default {
           staticClass: `${this.split ? 'q-btn-dropdown-current' : 'q-btn-dropdown q-btn-dropdown-simple'}`,
           on: {
             click: e => {
+              this.split && this.hide()
               if (!this.disable) {
                 this.$emit('click', e)
               }
@@ -115,8 +115,7 @@ export default {
               flat: this.flat,
               rounded: this.rounded,
               push: this.push,
-              small: this.small,
-              big: this.big,
+              size: this.size,
               color: this.color,
               glossy: this.glossy,
               noRipple: this.noRipple,
@@ -126,7 +125,7 @@ export default {
             on: {
               click: () => {
                 if (!this.disable) {
-                  this.show()
+                  this.toggle()
                 }
               }
             }
@@ -138,6 +137,9 @@ export default {
     )
   },
   methods: {
+    toggle () {
+      return this.$refs.popover.toggle()
+    },
     show () {
       return this.$refs.popover.show()
     },

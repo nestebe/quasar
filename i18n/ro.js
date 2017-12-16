@@ -1,4 +1,5 @@
 export default {
+  lang: 'ro',
   label: {
     clear: 'Golește',
     ok: 'OK',
@@ -80,5 +81,9 @@ export default {
     size6: 'Foarte mare',
     size7: 'Maxim',
     defaultFont: 'Font implicit'
+  },
+  tree: {
+    noNodes: 'Nu sunt date disponibile',
+    noResults: 'Nu am găsit noduri care să corespundă'
   }
 }

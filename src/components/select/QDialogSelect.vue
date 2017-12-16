@@ -8,9 +8,11 @@
     :stack-label="stackLabel"
     :float-label="floatLabel"
     :error="error"
+    :warning="warning"
     :disable="disable"
     :inverted="inverted"
     :dark="dark"
+    :hide-underline="hideUnderline"
     :before="before"
     :after="after"
     :color="frameColor || color"
@@ -56,7 +58,7 @@
       class="q-if-control"
       @click.stop="clear"
     ></q-icon>
-    <q-icon slot="after" name="arrow_drop_down" class="q-if-control"></q-icon>
+    <q-icon slot="after" :name="$q.icon.input.dropdown" class="q-if-control"></q-icon>
   </q-input-frame>
 </template>
 
@@ -106,14 +108,14 @@ export default {
         },
         cancel: this.cancelLabel || true,
         ok: this.okLabel || true
-      }).catch(() => {
-        this.dialog = null
       }).then(data => {
         this.dialog = null
         if (JSON.stringify(this.value) !== JSON.stringify(data)) {
           this.$emit('input', data)
           this.$emit('change', data)
         }
+      }).catch(() => {
+        this.dialog = null
       })
     },
     hide () {

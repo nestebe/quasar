@@ -37,9 +37,10 @@
         @mousedown="__animScrollTo(0)"
         @touchstart="__animScrollTo(0)"
         @mouseup="__stopAnimScroll"
+        @mouseleave="__stopAnimScroll"
         @touchend="__stopAnimScroll"
       >
-        <q-icon name="chevron_left"></q-icon>
+        <q-icon :name="$q.icon.tabs.left"></q-icon>
       </div>
       <div
         ref="rightScroll"
@@ -47,9 +48,10 @@
         @mousedown="__animScrollTo(9999)"
         @touchstart="__animScrollTo(9999)"
         @mouseup="__stopAnimScroll"
+        @mouseleave="__stopAnimScroll"
         @touchend="__stopAnimScroll"
       >
-        <q-icon name="chevron_right"></q-icon>
+        <q-icon :name="$q.icon.tabs.right"></q-icon>
       </div>
     </div>
 
@@ -330,6 +332,9 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
+      if (!this.$refs.scroller) {
+        return
+      }
       this.$refs.scroller.addEventListener('scroll', this.__updateScrollIndicator)
       window.addEventListener('resize', this.__redraw)
 

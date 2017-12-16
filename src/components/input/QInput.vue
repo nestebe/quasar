@@ -11,6 +11,7 @@
     :disable="disable"
     :inverted="inverted"
     :dark="dark"
+    :hide-underline="hideUnderline"
     :before="before"
     :after="after"
     :color="color"
@@ -31,7 +32,7 @@
           class="col q-input-target q-input-shadow absolute-top"
           ref="shadow"
           :value="model"
-          :rows="minRows"
+          v-bind="$attrs"
         ></textarea>
 
         <textarea
@@ -43,8 +44,7 @@
           :disabled="disable"
           :readonly="readonly"
           :maxlength="maxLength"
-          :rows="minRows"
-          v-bind="attributes"
+          v-bind="$attrs"
 
           :value="model"
           @input="__set"
@@ -65,15 +65,10 @@
 
       :name="name"
       :placeholder="inputPlaceholder"
-      :pattern="pattern"
       :disabled="disable"
       :readonly="readonly"
       :maxlength="maxLength"
-      v-bind="attributes"
-
-      :min="min"
-      :max="max"
-      :step="inputStep"
+      v-bind="$attrs"
 
       :type="inputType"
       :value="model"
@@ -88,7 +83,7 @@
     <q-icon
       v-if="isPassword && !noPassToggle && length"
       slot="after"
-      :name="showPass ? 'visibility' : 'visibility_off'"
+      :name="$q.icon.input[showPass ? 'showPass' : 'hidePass']"
       class="q-if-control"
       @mousedown="__clearTimer"
       @touchstart="__clearTimer"
@@ -96,9 +91,19 @@
     ></q-icon>
 
     <q-icon
+      v-if="isNumber && !noNumberToggle && length"
+      slot="after"
+      :name="$q.icon.input[showNumber ? 'showNumber' : 'hideNumber']"
+      class="q-if-control"
+      @mousedown="__clearTimer"
+      @touchstart="__clearTimer"
+      @click="toggleNumber"
+    ></q-icon>
+
+    <q-icon
       v-if="editable && clearable && length"
       slot="after"
-      name="cancel"
+      :name="$q.icon.input.clear"
       class="q-if-control"
       @mousedown="__clearTimer"
       @touchstart="__clearTimer"
@@ -145,21 +150,16 @@ export default {
     minRows: Number,
     clearable: Boolean,
     noPassToggle: Boolean,
+    noNumberToggle: Boolean,
     readonly: Boolean,
-    attributes: Object,
 
-    min: Number,
-    max: Number,
-    step: {
-      type: Number,
-      default: 1
-    },
     maxDecimals: Number,
     upperCase: Boolean
   },
   data () {
     return {
       showPass: false,
+      showNumber: true,
       model: this.value,
       shadow: {
         val: this.model,
@@ -185,6 +185,7 @@ export default {
   watch: {
     value (v) {
       this.model = v
+      this.isNumberError = false
     }
   },
   provide () {
@@ -207,17 +208,15 @@ export default {
     },
     pattern () {
       if (this.isNumber) {
-        return '[0-9]*'
-      }
-    },
-    inputStep () {
-      if (this.isNumber) {
-        return this.step
+        return this.$attrs.pattern || '[0-9]*'
       }
     },
     inputType () {
-      return this.isPassword
-        ? (this.showPass ? 'text' : 'password')
+      if (this.isPassword) {
+        return this.showPass ? 'text' : 'password'
+      }
+      return this.isNumber
+        ? (this.showNumber ? 'number' : 'text')
         : this.type
     },
     length () {
@@ -232,6 +231,11 @@ export default {
   methods: {
     togglePass () {
       this.showPass = !this.showPass
+      clearTimeout(this.timer)
+      this.focus()
+    },
+    toggleNumber () {
+      this.showNumber = !this.showNumber
       clearTimeout(this.timer)
       this.focus()
     },
@@ -254,10 +258,11 @@ export default {
       if (this.isNumber) {
         val = parseFloat(val)
         if (isNaN(val)) {
-          // Number.isInteger(this.maxDecimals)
-          val = null
+          this.isNumberError = true
+          return
         }
-        else if (Number.isInteger(this.maxDecimals)) {
+        this.isNumberError = false
+        if (Number.isInteger(this.maxDecimals)) {
           val = parseFloat(val.toFixed(this.maxDecimals))
         }
       }

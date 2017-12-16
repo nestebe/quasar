@@ -1,4 +1,5 @@
 export default {
+  lang: 'id',
   label: {
     clear: 'Bersihkan',
     ok: 'OK',
@@ -80,5 +81,9 @@ export default {
     size6: 'Sangat Besar',
     size7: 'Maksimum',
     defaultFont: 'Huruf Bawaan'
+  },
+  tree: {
+    noNodes: 'Tak ada node tersedia',
+    noResults: 'Tak ditemukan node yang cocok'
   }
 }

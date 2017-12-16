@@ -39,7 +39,7 @@ It could be you!
 
 ### $10+
 
-- Max Matteo Staack ($4400)
+- Max Matteo Staack ($40)
 - Valerian Cure ($25)
 - Shawn Makinson ($25)
 - Anca-Anamaria Enache ($20)
@@ -68,6 +68,8 @@ It could be you!
 - William Correa
 - PHPZM
 - Klemens Witting
+- Jochen Geiger
+- Rok Kogovšek
 
 - Ken ($5)
 - Oliver ($5)
@@ -82,6 +84,7 @@ It could be you!
 
 ### Notable one time
 
+- Bert Van den Eynde 600 EUR
 - Jurgen Hollfelder 500 EUR
 - Robert Preston $250
 - Remo Laubacher $200

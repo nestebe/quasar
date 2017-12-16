@@ -11,7 +11,7 @@ export default {
           : (this.loader ? this.loaderLabel || this.$q.i18n.table.loader : this.noDataLabel || this.$q.i18n.table.noData)
 
         return h('div', { staticClass: 'q-table-bottom row items-center q-table-nodata' }, [
-          h(QIcon, {props: {name: 'warning'}}),
+          h(QIcon, {props: { name: this.$q.icon.table.warning }}),
           message
         ])
       }
@@ -35,12 +35,12 @@ export default {
             ? (this.selectedRowsLabel || this.$q.i18n.table.selectedRows)(this.rowsSelectedNumber)
             : ''
         ]),
-        h('div', [
+        h('div', { staticClass: 'flex items-center' }, [
           h('span', { style: {marginRight: '32px'} }, [
             this.rowsPerPageLabel || this.$q.i18n.table.rowsPerPage
           ]),
           h(QSelect, {
-            staticClass: 'inline',
+            staticClass: 'inline q-pb-none',
             style: {
               margin: '0 15px',
               minWidth: '50px'
@@ -49,7 +49,8 @@ export default {
               color: this.color,
               value: rowsPerPage,
               options: this.computedRowsPerPageOptions,
-              dark: this.dark
+              dark: this.dark,
+              hideUnderline: true
             },
             on: {
               input: rowsPerPage => {
@@ -69,8 +70,8 @@ export default {
             props: {
               color: this.color,
               round: true,
-              icon: 'chevron_left',
-              small: true,
+              icon: this.$q.icon.table.prevPage,
+              size: 'sm',
               flat: true,
               disable: page === 1
             },
@@ -84,8 +85,8 @@ export default {
             props: {
               color: this.color,
               round: true,
-              icon: 'chevron_right',
-              small: true,
+              icon: this.$q.icon.table.nextPage,
+              size: 'sm',
               flat: true,
               disable: this.lastRowIndex === 0 || page * rowsPerPage >= this.computedRowsNumber
             },
